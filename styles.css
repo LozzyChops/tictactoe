@@ -1,0 +1,12 @@
+button {
+    border-radius: 0;
+    height: 20vh;
+    width: 20vw;
+}
+
+#grid {
+    display: grid;
+    height: 60vh;
+    width: 60vw;
+    grid-template-columns: auto auto auto;
+}
