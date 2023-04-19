@@ -27,6 +27,7 @@ const gameBoard = (function () {
 const displayController = (function () {
     const DOMButtons = document.getElementsByClassName("game-button");
     const instructions = document.getElementById("game-instructions");
+    const restartOptions = document.getElementById("restart-options");
 
     //the way to initialize the buttons in the HTML so that they each have the necessary event listener and have empty innerHTML
     const initDOMButtons = function () {
@@ -45,10 +46,21 @@ const displayController = (function () {
         instructions.innerHTML = message;
     };
 
+    const showRestartOptions = () => {
+        restartOptions.addEventListener("click", gameController.endGame);
+        restartOptions.style.visibility = "visible";
+    }
+
+    const hideRestartOptions = () => {
+        restartOptions.style.visibility = "hidden";
+    }
+
     return {
         initDOMButtons,
         updateBoardDisplay,
         updateInstructions,
+        showRestartOptions,
+        hideRestartOptions,
     };
 })();
 
@@ -121,10 +133,10 @@ const gameController = (function () {
 
         if (isWin()) {
             displayController.updateInstructions(`${getCurrentPlayer().getName()}, you win!`);
-            endGame();
+            displayController.showRestartOptions();
         } else if (isTie()) {
             displayController.updateInstructions("It's a tie.");
-            endGame();
+            displayController.showRestartOptions();
         } else {
             updateCurrentTurn();
             updateCurrentPlayer();
@@ -183,6 +195,7 @@ const gameController = (function () {
     const isTie = () => (getCurrentTurn() > 8);
 
     const endGame = function () {
+        displayController.hideRestartOptions();
         initGame();
     };
 
@@ -190,6 +203,7 @@ const gameController = (function () {
         initGame,
         progressGame,
         getCurrentPlayer,
+        endGame,
     };
 
     return gameController;
