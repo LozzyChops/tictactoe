@@ -3,6 +3,7 @@
 const gameBoard = (function () {
     let boardArray = new Array(9);
 
+    //the way to initialize the board array for a new game
     const initBoardArray = function () {
         boardArray = ["", "", "", "", "", "", "", "", ""];
     };
@@ -11,6 +12,7 @@ const gameBoard = (function () {
         return boardArray;
     };
 
+    //the way to add the current player symbol to a button in the board array, using the ID in the HTML to supply the array index
     const updateBoardArray = (buttonId) => {
         boardArray[buttonId] = gameController.getCurrentPlayer().getSymbol();
     };
@@ -25,6 +27,7 @@ const gameBoard = (function () {
 const displayController = (function () {
     const DOMButtons = document.getElementsByClassName("game-button");
 
+    //the way to initialize the buttons in the HTML so that they each have the necessary event listener and have empty innerHTML
     const initDOMButtons = function () {
         for (let i = 0; i < DOMButtons.length; i++) {
             DOMButtons[i].innerHTML = "";
@@ -32,17 +35,13 @@ const displayController = (function () {
         }
     };
 
-    const getDOMButtons = () => {
-        return DOMButtons;
-    };
-
+    //the way to add the current player symbol to the innerHTML of the button that was clicked
     const updateBoardDisplay = function (event) {
         event.target.innerHTML = gameController.getCurrentPlayer().getSymbol();
     };
 
     return {
         initDOMButtons,
-        getDOMButtons,
         updateBoardDisplay,
     };
 })();
@@ -52,7 +51,6 @@ const gameController = (function () {
     let currentPlayer;
     let playerOne;
     let playerTwo;
-    let boardArray;
 
     const Player = (name, symbol) => {
         const getName = () => name;
@@ -89,23 +87,25 @@ const gameController = (function () {
         return currentPlayer;
     };
 
+    //the way to initialize everything for a fresh round of the game, including the way to track turns and current player, and initializing the board and display
     const initGame = function () {
-        boardArray = gameBoard.initBoardArray();
         playerOne = Player("Player 1", "X");
         playerTwo = Player("Player 2", "O");
         currentTurn = 1;
         currentPlayer = playerOne;
+        gameBoard.initBoardArray();
         displayController.initDOMButtons();
+        
 
         return {
             currentTurn,
             currentPlayer,
             playerOne,
             playerTwo,
-            boardArray,
         };
     };
 
+    //when a board button is clicked, this is triggered
     const progressGame = function (event) {
         if (isInvalidMove(event["target"]["id"])) return;
         else {
@@ -182,7 +182,6 @@ const gameController = (function () {
     let gameController = {
         initGame,
         progressGame,
-        getCurrentTurn,
         getCurrentPlayer,
     };
 
