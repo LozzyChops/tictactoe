@@ -26,6 +26,7 @@ const gameBoard = (function () {
 
 const displayController = (function () {
     const DOMButtons = document.getElementsByClassName("game-button");
+    const instructions = document.getElementById("game-instructions");
 
     //the way to initialize the buttons in the HTML so that they each have the necessary event listener and have empty innerHTML
     const initDOMButtons = function () {
@@ -40,9 +41,14 @@ const displayController = (function () {
         event.target.innerHTML = gameController.getCurrentPlayer().getSymbol();
     };
 
+    const updateInstructions = (message) => {
+        instructions.innerHTML = message;
+    };
+
     return {
         initDOMButtons,
         updateBoardDisplay,
+        updateInstructions,
     };
 })();
 
@@ -95,7 +101,7 @@ const gameController = (function () {
         currentPlayer = playerOne;
         gameBoard.initBoardArray();
         displayController.initDOMButtons();
-        
+        displayController.updateInstructions("New game! Player 1, take your turn.");        
 
         return {
             currentTurn,
@@ -114,14 +120,15 @@ const gameController = (function () {
         };  
 
         if (isWin()) {
-            console.log("someone won! ending game!")
+            displayController.updateInstructions(`${getCurrentPlayer().getName()}, you win!`);
             endGame();
         } else if (isTie()) {
-            console.log("tie! ending game!")
+            displayController.updateInstructions("It's a tie.");
             endGame();
         } else {
             updateCurrentTurn();
             updateCurrentPlayer();
+            displayController.updateInstructions(`${getCurrentPlayer().getName()}, take your turn.`);   
         };
     };
 
